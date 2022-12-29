@@ -1,17 +1,22 @@
 // Login form component
-import React, { useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import React, { useState, useEffect } from 'react';
+import { useMutation } from '@apollo/client';
+import { NavLink } from 'react-router-dom';
+import { LOGIN_MUTATION } from '../../../graphql/authentication/mutations';
+import { GraphQLError } from 'graphql';
+import Error from '../../Layouts/Error';
 
-const LOGIN_MUTATION = gql`
- mutation Login($email: String! $password: String!) {
-  login(email: $email password: $password)
- }
-`;
 
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [login] = useMutation(LOGIN_MUTATION); // {data}
+    const [errors, setErrors] = useState<readonly GraphQLError[]>([]);
+
+    const [login, { loading, data }] = useMutation(LOGIN_MUTATION, {
+        onError: ({ graphQLErrors }) => {
+            setErrors(graphQLErrors);
+        }
+    })
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -19,25 +24,54 @@ const LoginForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <label htmlFor="email">email:</label>
-            <input
-                type="text"
-                id="email"
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-            />
-            <br />
-            <label htmlFor="password">Password:</label>
-            <input
-                type="password"
-                id="password"
-                value={password}
-                onChange={(event) => setPassword(event.target.value)}
-            />
-            <br />
-            <button type="submit">Log in</button>
-        </form>
+        <form className="space-y-4 md:space-y-6" onSubmit={handleSubmit}>
+            <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Your email</label>
+                <input
+                    type="text"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    id="email"
+                    placeholder="Email address"
+                    autoComplete="on"
+                    value={email}
+                    onChange={(event) => setEmail(event.target.value)}
+                />
+            </div>
+            <div>
+                <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
+                <input
+                    type="password"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    id="password"
+                    placeholder="Password"
+                    autoComplete="on"
+                    value={password}
+                    onChange={(event) => setPassword(event.target.value)}
+                />
+            </div>
+            
+            {errors && errors.length > 0 && (
+                <Error errors={errors} />
+            )}
+
+            <div className="flex items-center justify-center">
+                <button className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
+                    Forgot password?
+                </button>
+            </div>
+            <button type="submit" className="w-full bg-blue-600 text-gray-100  py-2 px-3 rounded  hover:bg-blue-800 hover:text-gray-100">
+                Sign in
+            </button>
+
+            <p className="text-md font-light text-gray-500 dark:text-gray-600">
+                Don’t have an account yet? &nbsp;
+                <button className="font-medium text-primary-600 hover:underline dark:text-primary-700">
+                    <NavLink to="/sign-up">
+                        Sign up
+                    </NavLink >
+                </button>
+            </p>
+        </form >
     );
 };
 
