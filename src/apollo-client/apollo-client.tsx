@@ -1,17 +1,18 @@
 // @ts-nocheck
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
 import { getCSRFToken } from '../csrf-token';
 
 let csrfToken = await getCSRFToken();
 
-const token = Cookies.get('token');
+const cookies = new Cookies();
+const authToken = cookies.get('authToken');
 const authLink = setContext((_, { headers }) => {
     return {
         headers: {
             ...headers,
-            authorization: token ? `Bearer ${token}` : "",
+            authorization: authToken ? `Bearer ${authToken}` : "",
         }
     }
 });

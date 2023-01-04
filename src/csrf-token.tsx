@@ -1,5 +1,5 @@
 import { axiosInstance } from './axios-client/axios-client';
-import Cookies from 'js-cookie';
+import Cookies from 'universal-cookie';
 
 export async function requestCSRFToken() {
     await axiosInstance.get('/sanctum/csrf-cookie');
@@ -7,6 +7,7 @@ export async function requestCSRFToken() {
 
 export async function getCSRFToken() {
     await requestCSRFToken();
-    let token: any = Cookies.get('XSRF-TOKEN');
+    const cookies = new Cookies();
+    let token: any = cookies.get('XSRF-TOKEN');
     return decodeURIComponent(token);
 }

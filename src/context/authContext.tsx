@@ -1,15 +1,16 @@
 // @ts-nocheck
-import Cookies from 'js-cookie'
+import Cookies from 'universal-cookie'
 import { createContext, useReducer } from 'react';
 
 const initialState = {
     user: null
 }
 
-if (Cookies.get('token')) {
-    const decodedToken = Cookies.get('token');
-    //console.log(decodedToken);
-    initialState.user = decodedToken;
+const cookies = new Cookies();
+let authToken = cookies.get('authToken');
+
+if (authToken) {
+    initialState.user = authToken;
 }
 
 const AuthContext = createContext({
@@ -39,7 +40,12 @@ function AuthProvider(props) {
     const [state, dispatch] = useReducer(authReducer, initialState);
 
     const login = (userData) => {
-        Cookies.set("token", userData.login, { HttpOnly: true });
+        cookies.set("authToken", userData.login, {
+            path: "/",
+            httpOnly: false, // set to true
+            sameSite: "strict",
+            maxAge: 60 * 60 * 24 * 30
+        });
         dispatch({
             type: 'LOGIN',
             payload: userData
@@ -47,7 +53,7 @@ function AuthProvider(props) {
     }
 
     function logout() {
-        Cookies.remove("token");
+        cookies.remove("authToken");
         dispatch({ type: 'LOGOUT' });
     }
 
