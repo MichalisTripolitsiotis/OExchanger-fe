@@ -1,18 +1,25 @@
-// Login form component
-import React, { useState, useEffect } from 'react';
+import { useState, useContext } from 'react';
 import { useMutation } from '@apollo/client';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { LOGIN_MUTATION } from '../../../graphql/authentication/mutations';
 import { GraphQLError } from 'graphql';
 import Error from '../../Layouts/Error';
+import { AuthContext } from '../../../context/authContext';
 
 
 const LoginForm = () => {
+    let navigate = useNavigate();
+    const context = useContext(AuthContext);
+
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState<readonly GraphQLError[]>([]);
 
-    const [login, { loading, data }] = useMutation(LOGIN_MUTATION, {
+    const [login] = useMutation(LOGIN_MUTATION, {
+        onCompleted: (data) => {
+            context.login(data);
+            navigate('/dashboard');
+        },
         onError: ({ graphQLErrors }) => {
             setErrors(graphQLErrors);
         }
@@ -49,7 +56,7 @@ const LoginForm = () => {
                     onChange={(event) => setPassword(event.target.value)}
                 />
             </div>
-            
+
             {errors && errors.length > 0 && (
                 <Error errors={errors} />
             )}
