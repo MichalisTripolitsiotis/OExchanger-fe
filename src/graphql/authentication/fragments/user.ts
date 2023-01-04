@@ -5,7 +5,6 @@ export const userFragment = gql`
     id
     name
     email
-    blocked
     created_at
   }
 `;

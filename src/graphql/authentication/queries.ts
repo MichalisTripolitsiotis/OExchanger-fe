@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 import { userFragment } from './fragments/user';
 
 // Query for current user (based on auth token)
-export const me = gql`
+export const ME = gql`
   query Me {
     me {
       ...UserFragment
@@ -15,17 +15,6 @@ export const user = gql`
   query User($id: ID!) {
     user(id: $id) {
       ...UserFragment
-    }
-  }
-  ${userFragment}
-`;
-
-export const users = gql`
-  query Users() {
-    users() {
-      data {
-        ...UserFragment
-      }
     }
   }
   ${userFragment}
