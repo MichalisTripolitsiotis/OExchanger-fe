@@ -3,18 +3,18 @@ import Cookies from 'universal-cookie'
 import { createContext, useReducer } from 'react';
 
 const initialState = {
-    user: null
+    token: null
 }
 
 const cookies = new Cookies();
 let authToken = cookies.get('authToken');
 
 if (authToken) {
-    initialState.user = authToken;
+    initialState.token = authToken;
 }
 
 const AuthContext = createContext({
-    user: null,
+    token: null,
     login: (userData) => { },
     logout: () => { }
 });
@@ -24,12 +24,12 @@ function authReducer(state, action) {
         case 'LOGIN':
             return {
                 ...state,
-                user: action.payload
+                token: action.payload
             }
         case 'LOGOUT':
             return {
                 ...state,
-                user: null
+                token: null
             }
         default:
             return state;
@@ -58,7 +58,7 @@ function AuthProvider(props) {
     }
 
     return (
-        <AuthContext.Provider value={{ user: state.user, login, logout }}
+        <AuthContext.Provider value={{ token: state.token, login, logout }}
             {...props}
         />
     )

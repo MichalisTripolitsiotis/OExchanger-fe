@@ -11,7 +11,7 @@ import { useContext } from 'react';
 import Me from './components/authentication/pages/authenticated/Me';
 
 function App() {
-  const { user } = useContext(AuthContext);
+  const { token } = useContext(AuthContext);
   return (
     <div>
       <Navbar />
@@ -19,7 +19,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/sign-up" element={<Signup />} />
-        <Route element={<ProtectedRoute user={user} />}>
+        <Route element={<ProtectedRoute token={token} />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="me" element={<Me />} />
         </Route>
