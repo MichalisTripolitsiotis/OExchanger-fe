@@ -1,6 +1,8 @@
 // @ts-nocheck
 import Cookies from 'universal-cookie'
-import { createContext, useReducer } from 'react';
+import { createContext, useReducer, useEffect } from 'react';
+import { useApolloClient } from '@apollo/client';
+import { ME } from '../graphql/authentication/queries';
 
 const initialState = {
     token: null
@@ -38,6 +40,22 @@ function authReducer(state, action) {
 
 function AuthProvider(props) {
     const [state, dispatch] = useReducer(authReducer, initialState);
+    const client = useApolloClient();
+    useEffect(() => {
+        const fetchUser = async () => {
+            if (authToken) {
+                await client.query({
+                    query: ME
+                }).then(response => {
+                    if (response.data.me === null) {
+                        logout();
+                    }
+                });
+            }
+        }
+
+        fetchUser();
+    }, [client]);
 
     const login = (userData) => {
         cookies.set("authToken", userData.login, {

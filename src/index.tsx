@@ -14,15 +14,15 @@ const root = ReactDOM.createRoot(
 );
 
 root.render(
-  <AuthProvider>
-    <ApolloProvider client={client}>
+  <ApolloProvider client={client}>
+    <AuthProvider>
       <BrowserRouter>
         <React.StrictMode>
           <App />
         </React.StrictMode>
       </BrowserRouter>
-    </ApolloProvider>
-  </AuthProvider>
+    </AuthProvider>
+  </ApolloProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
