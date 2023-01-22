@@ -7,29 +7,20 @@ export const LOGIN_MUTATION = gql`
  }
 `;
 
+export const REGISTER_MUTATION = gql`
+ mutation Register($input: RegisterInput!) {
+  register(input: $input){
+    message
+  }
+ }
+`;
+
 export const logout = gql`
   mutation Logout {
     logout
   }
 `;
 
-export const createUser = gql`
-  mutation CreateUser(
-    $name: String!
-    $email: String!
-    $password: String
-    ) {
-    createUser(
-      input: {
-        name: $name
-        email: $email
-        password: $password
-      }) {
-      ...UserFragment
-    }
-  }
-  ${userFragment}
-`;
 
 export const updateUser = gql`
   mutation UpdateUser(

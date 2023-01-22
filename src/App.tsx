@@ -23,6 +23,12 @@ function App() {
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="me" element={<Me />} />
         </Route>
+        <Route path="*" element={
+            <div>
+              <h2>404 Page not found</h2>
+            </div>
+          }
+        />
       </Routes>
     </div >
   );
