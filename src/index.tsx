@@ -1,27 +1,28 @@
+// @ts-nocheck
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
-
-const client = new ApolloClient({
-  uri: 'http://localhost/graphql/',
-  cache: new InMemoryCache(),
-});
+import client from './apollo-client/apollo-client';
+import { AuthProvider } from './context/authContext';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
-  <React.StrictMode>
-    <BrowserRouter>
-      <ApolloProvider client={client}>
-        <App />
-      </ApolloProvider>
-    </BrowserRouter>
-  </React.StrictMode>
+  <ApolloProvider client={client}>
+    <AuthProvider>
+      <BrowserRouter>
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </BrowserRouter>
+    </AuthProvider>
+  </ApolloProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function
