@@ -15,6 +15,12 @@ export const REGISTER_MUTATION = gql`
  }
 `;
 
+export const EMAIL_VERIFICATION = gql`
+ mutation VerifyEmail($input: VerifyEmailInput!) {
+  verifyEmail(input: $input)
+ }
+`;
+
 export const logout = gql`
   mutation Logout {
     logout

@@ -1,11 +1,11 @@
 // @ts-nocheck
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
-import { REGISTER_MUTATION } from "../../../graphql/authentication/mutations";
+import { REGISTER_MUTATION } from "../../../../graphql/authentication/mutations";
 import { NavLink, useNavigate } from "react-router-dom";
-import ValidationError from "../../Layouts/ValidationError";
-import { useValidationErrors } from "../../../hooks/useValidationErrors";
-import Alert from "../../Layouts/Alert";
+import ValidationError from "../../../Layouts/ValidationError";
+import { useValidationErrors } from "../../../../hooks/useValidationErrors";
+import Alert from "../../../Layouts/Alert";
 
 const RegisterForm = () => {
     let navigate = useNavigate();
@@ -16,7 +16,7 @@ const RegisterForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password_confirmation, setPasswordConfirmation] = useState('');
-    const [callbackUrl] = useState('http://localhost:3000');
+    const [callbackUrl] = useState('http://localhost:3000/verifyemail/');
 
     const { errors, handleErrors } = useValidationErrors();
 
@@ -96,9 +96,6 @@ const RegisterForm = () => {
                     />
                 </div>
 
-
-                {Object.values(errors).length > 0 && <ValidationError errors={Object.values(errors)} />}
-
                 <button type="submit" className="w-full bg-blue-600 text-gray-100  py-2 px-3 rounded  hover:bg-blue-800 hover:text-gray-100">
                     Register
                 </button>
@@ -113,9 +110,11 @@ const RegisterForm = () => {
                 </p>
             </form>
 
+            {Object.values(errors).length > 0 && <ValidationError errors={Object.values(errors)} />}
+
             <Alert
                 isOpen={isOpenAlert}
-                title="Title"
+                title="Success"
                 message="Your account has been created successfully. An email has been sent to verify your account."
                 onClose={closeAlert}
             />
