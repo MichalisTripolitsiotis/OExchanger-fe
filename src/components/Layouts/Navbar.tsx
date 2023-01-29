@@ -56,8 +56,8 @@ const Navbar = () => {
                                 </NavLink >
                             </button>
                             <button className="bg-blue-600 text-gray-100  py-2 px-3 rounded  hover:bg-blue-800 hover:text-gray-100">
-                                <NavLink to="/sign-up">
-                                    Sign up
+                                <NavLink to="/register">
+                                    Register
                                 </NavLink >
                             </button>
                         </div>

@@ -73,8 +73,8 @@ const LoginForm = () => {
             <p className="text-md font-light text-gray-500 dark:text-gray-600">
                 Don’t have an account yet? &nbsp;
                 <button className="font-medium text-primary-600 hover:underline dark:text-primary-700">
-                    <NavLink to="/sign-up">
-                        Sign up
+                    <NavLink to="/register">
+                        Register
                     </NavLink >
                 </button>
             </p>
