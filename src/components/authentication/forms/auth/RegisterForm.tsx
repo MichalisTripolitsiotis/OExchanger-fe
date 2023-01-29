@@ -16,7 +16,7 @@ const RegisterForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [password_confirmation, setPasswordConfirmation] = useState('');
-    const [callbackUrl] = useState('http://localhost:3000');
+    const [callbackUrl] = useState('http://localhost:3000/verifyemail/');
 
     const { errors, handleErrors } = useValidationErrors();
 
