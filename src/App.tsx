@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { Route, Routes } from 'react-router-dom';
 import Navbar from './components/Layouts/Navbar';
-import Login from './components/authentication/pages/Login';
-import Signup from './components/authentication/pages/Register';
+import Login from './components/authentication/pages/auth/Login';
+import Signup from './components/authentication/pages/auth/Register';
 import Home from './components/home/Home';
 import Dashboard from './components/authentication/pages/authenticated/Dashboard';
 import ProtectedRoute from './components/Layouts/ProtectedRoute';

@@ -1,10 +1,10 @@
 import { useState, useContext } from 'react';
 import { useMutation } from '@apollo/client';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { LOGIN_MUTATION } from '../../../graphql/authentication/mutations';
+import { LOGIN_MUTATION } from '../../../../graphql/authentication/mutations';
 import { GraphQLError } from 'graphql';
-import Error from '../../Layouts/Error';
-import { AuthContext } from '../../../context/authContext';
+import Error from '../../../Layouts/Error';
+import { AuthContext } from '../../../../context/authContext';
 
 
 const LoginForm = () => {

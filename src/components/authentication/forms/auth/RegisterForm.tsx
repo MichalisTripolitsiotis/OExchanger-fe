@@ -1,11 +1,11 @@
 // @ts-nocheck
 import { useMutation } from "@apollo/client";
 import { useState } from "react";
-import { REGISTER_MUTATION } from "../../../graphql/authentication/mutations";
+import { REGISTER_MUTATION } from "../../../../graphql/authentication/mutations";
 import { NavLink, useNavigate } from "react-router-dom";
-import ValidationError from "../../Layouts/ValidationError";
-import { useValidationErrors } from "../../../hooks/useValidationErrors";
-import Alert from "../../Layouts/Alert";
+import ValidationError from "../../../Layouts/ValidationError";
+import { useValidationErrors } from "../../../../hooks/useValidationErrors";
+import Alert from "../../../Layouts/Alert";
 
 const RegisterForm = () => {
     let navigate = useNavigate();
@@ -115,7 +115,7 @@ const RegisterForm = () => {
 
             <Alert
                 isOpen={isOpenAlert}
-                title="Title"
+                title="Success"
                 message="Your account has been created successfully. An email has been sent to verify your account."
                 onClose={closeAlert}
             />
