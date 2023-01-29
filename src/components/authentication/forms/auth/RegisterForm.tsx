@@ -96,9 +96,6 @@ const RegisterForm = () => {
                     />
                 </div>
 
-
-                {Object.values(errors).length > 0 && <ValidationError errors={Object.values(errors)} />}
-
                 <button type="submit" className="w-full bg-blue-600 text-gray-100  py-2 px-3 rounded  hover:bg-blue-800 hover:text-gray-100">
                     Register
                 </button>
@@ -112,6 +109,8 @@ const RegisterForm = () => {
                     </button>
                 </p>
             </form>
+
+            {Object.values(errors).length > 0 && <ValidationError errors={Object.values(errors)} />}
 
             <Alert
                 isOpen={isOpenAlert}
