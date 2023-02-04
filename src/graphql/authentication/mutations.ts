@@ -25,7 +25,13 @@ export const FORGOT_PASSWORD = gql`
 mutation ForgotPassword($input: ForgotPasswordInput!) {
   forgotPassword(input: $input)
 }
-`; 
+`;
+
+export const PASSWORD_RESET = gql`
+mutation ResetPassword($input: ResetPasswordInput!) {
+  resetPassword(input: $input)
+}
+`;
 
 export const logout = gql`
   mutation Logout {

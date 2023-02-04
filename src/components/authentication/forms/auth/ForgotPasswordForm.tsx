@@ -13,7 +13,7 @@ const ForgotPasswordForm = () => {
 
     const [email, setEmail] = useState('');
     const [errors, setErrors] = useState<readonly GraphQLError[]>([]);
-    const [callbackUrl] = useState('http://localhost:3000');
+    const [callbackUrl] = useState('http://localhost:3000/reset-password/');
 
     const openAlert = () => {
         setIsOpenAlert(true);
