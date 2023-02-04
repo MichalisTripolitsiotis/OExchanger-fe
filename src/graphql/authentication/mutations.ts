@@ -21,6 +21,12 @@ export const EMAIL_VERIFICATION = gql`
  }
 `;
 
+export const FORGOT_PASSWORD = gql`
+mutation ForgotPassword($input: ForgotPasswordInput!) {
+  forgotPassword(input: $input)
+}
+`; 
+
 export const logout = gql`
   mutation Logout {
     logout
