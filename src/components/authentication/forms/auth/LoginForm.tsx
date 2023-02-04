@@ -60,7 +60,9 @@ const LoginForm = () => {
 
                 <div className="flex items-center justify-center">
                     <button className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
-                        Forgot password?
+                        <NavLink to="/forgot-password">
+                            Forgot password?
+                        </NavLink >
                     </button>
                 </div>
                 <button type="submit" className="w-full bg-blue-600 text-gray-100  py-2 px-3 rounded  hover:bg-blue-800 hover:text-gray-100">
