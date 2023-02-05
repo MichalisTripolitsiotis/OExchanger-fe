@@ -1,8 +1,8 @@
 // @ts-nocheck
 import { Navigate, Outlet } from "react-router-dom";
 
-const ProtectedRoute = ({ token, redirectPath = '/', children }) => {
-    if (!token) {
+const ProtectedRoute = ({ token, authenticated, action, redirectPath = '/login', children }) => {
+    if (!token || !authenticated) {
         return <Navigate to={redirectPath} replace />;
     }
 

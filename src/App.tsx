@@ -14,7 +14,8 @@ import ForgotPassword from './components/authentication/pages/auth/ForgotPasswor
 import ResetPassword from './components/authentication/pages/auth/ResetPassword';
 
 function App() {
-  const { token } = useContext(AuthContext);
+  const { token, isAuthenticated } = useContext(AuthContext);
+
   return (
     <div>
       <Navbar />
@@ -26,7 +27,7 @@ function App() {
         <Route path="/verifyemail/:token" element={<EmailVerification />} />
         <Route path="/reset-password/:token/:user" element={<ResetPassword />} />
 
-        <Route element={<ProtectedRoute token={token} />}>
+        <Route element={<ProtectedRoute token={token} authenticated={isAuthenticated} />}>
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="me" element={<Me />} />
         </Route>

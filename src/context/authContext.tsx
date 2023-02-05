@@ -17,6 +17,7 @@ if (authToken) {
 
 const AuthContext = createContext({
     token: null,
+    isAuthenticated: false,
     login: (userData) => { },
     logout: () => { }
 });
@@ -26,12 +27,14 @@ function authReducer(state, action) {
         case 'LOGIN':
             return {
                 ...state,
-                token: action.payload
+                token: action.payload,
+                isAuthenticated: true
             }
         case 'LOGOUT':
             return {
                 ...state,
-                token: null
+                token: null,
+                isAuthenticated: false
             }
         default:
             return state;
@@ -45,7 +48,8 @@ function AuthProvider(props) {
         const fetchUser = async () => {
             if (authToken) {
                 await client.query({
-                    query: ME
+                    query: ME,
+                    fetchPolicy: "no-cache"
                 }).then(response => {
                     if (response.data.me === null) {
                         logout();
@@ -76,7 +80,7 @@ function AuthProvider(props) {
     }
 
     return (
-        <AuthContext.Provider value={{ token: state.token, login, logout }}
+        <AuthContext.Provider value={{ token: state.token, isAuthenticated: state.isAuthenticated, login, logout }}
             {...props}
         />
     )
