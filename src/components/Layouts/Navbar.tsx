@@ -1,14 +1,23 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { AuthContext } from '../../context/authContext';
 import { useContext } from 'react';
+import { useMutation } from '@apollo/client';
+import { LOGOUT } from '../../graphql/authentication/mutations';
 
 const Navbar = () => {
     let navigate = useNavigate();
-    const { token, logout } = useContext(AuthContext);
+    const { token, isAuthenticated, logout } = useContext(AuthContext);
+
+    const [logoutMutation] = useMutation(LOGOUT, {
+        onCompleted: () => {
+            logout();
+            navigate('/');
+        }
+    });
 
     const onLogout = () => {
-        logout();
-        navigate('/');
+        logoutMutation();
+
     }
     // console.log(user);
     return (
@@ -19,7 +28,7 @@ const Navbar = () => {
                         <div>OExhanger</div>
                     </NavLink >
                 </h2>
-                {token ?
+                {token && isAuthenticated ?
                     <>
                         <div className="hidden w-full md:block md:w-auto" id="navbar-default">
                             <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">

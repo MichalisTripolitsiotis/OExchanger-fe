@@ -33,7 +33,7 @@ mutation ResetPassword($input: ResetPasswordInput!) {
 }
 `;
 
-export const logout = gql`
+export const LOGOUT = gql`
   mutation Logout {
     logout
   }
