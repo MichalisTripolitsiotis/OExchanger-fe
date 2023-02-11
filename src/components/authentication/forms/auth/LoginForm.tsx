@@ -27,6 +27,7 @@ const LoginForm = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setErrors([]);
         login({ variables: { email, password } });
     };
 
