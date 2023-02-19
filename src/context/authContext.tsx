@@ -1,89 +1,102 @@
-// @ts-nocheck
-import Cookies from 'universal-cookie'
-import { createContext, useReducer, useEffect } from 'react';
-import { useApolloClient } from '@apollo/client';
+import React, { createContext, useState, useEffect } from 'react';
 import { ME } from '../graphql/authentication/queries';
+import { useCookies } from "react-cookie";
+import { useApolloClient } from '@apollo/client';
 
-const initialState = {
-    token: null
+interface AuthContextProps {
+    token: string | null,
+    loading: boolean,
+    isAuthenticated: boolean,
+    setAuthenticated: (authenticationToken: string) => void,
+    logout: () => void,
 }
 
-const cookies = new Cookies();
-let authToken = cookies.get('authToken');
+const TOKEN_NAME = "authToken";
 
-if (authToken) {
-    initialState.token = authToken;
-}
-
-const AuthContext = createContext({
+const AuthContext = createContext<AuthContextProps>({
     token: null,
+    loading: true,
     isAuthenticated: false,
-    login: (userData) => { },
-    logout: () => { }
+    setAuthenticated: (authenticationToken: string) => { },
+    logout: () => { },
 });
 
-function authReducer(state, action) {
-    switch (action.type) {
-        case 'LOGIN':
-            return {
-                ...state,
-                token: action.payload,
-                isAuthenticated: true
-            }
-        case 'LOGOUT':
-            return {
-                ...state,
-                token: null,
-                isAuthenticated: false
-            }
-        default:
-            return state;
-    }
+interface AuthProviderProps {
+    children: React.ReactNode;
 }
 
-function AuthProvider(props) {
-    const [state, dispatch] = useReducer(authReducer, initialState);
+const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+    const [loading, setLoading] = useState(true);
+    const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+    const [token, setToken] = useState<string | null>(null);
+    const [cookies, setCookie, removeCookie] = useCookies([TOKEN_NAME]);
     const client = useApolloClient();
+
     useEffect(() => {
-        const fetchUser = async () => {
-            if (authToken) {
-                await client.query({
-                    query: ME,
-                    fetchPolicy: "no-cache"
-                }).then(response => {
-                    if (response.data.me === null) {
-                        logout();
+        const token = cookies[TOKEN_NAME];
+
+        if (token) {
+            const fetchUser = async () => {
+                try {
+                    const { data } = await client.query({
+                        query: ME,
+                        fetchPolicy: 'network-only',
+                    });
+
+                    const me = data?.me;
+                    console.log(me);
+                    if (me) {
+                        setIsAuthenticated(true);
+                        setToken(token);
+                        setLoading(false);
+                    } else {
+                        setIsAuthenticated(false);
+                        setLoading(false);
                     }
-                });
-            }
+                } catch (error) {
+                    setIsAuthenticated(false);
+                    setLoading(false);
+                }
+            };
+
+            fetchUser();
+        } else {
+            setLoading(false);
         }
+    }, [cookies, client]);
 
-        fetchUser();
-    }, [client]);
-
-    const login = (userData) => {
-        cookies.set("authToken", userData.login, {
+    const setAuthenticated = (authenticationToken: string) => {
+        console.log(authenticationToken);
+        setCookie(TOKEN_NAME, authenticationToken, {
             path: "/",
             httpOnly: false, // set to true
             sameSite: "strict",
             maxAge: 60 * 60 * 24 * 30
         });
-        dispatch({
-            type: 'LOGIN',
-            payload: userData
-        })
-    }
+        setIsAuthenticated(true);
+        setLoading(true);
+    };
 
-    function logout() {
-        cookies.remove("authToken");
-        dispatch({ type: 'LOGOUT' });
-    }
+    const logout = () => {
+        removeCookie(TOKEN_NAME);
+        client.clearStore();
+        client.resetStore();
+        setIsAuthenticated(false);
+    };
 
     return (
-        <AuthContext.Provider value={{ token: state.token, isAuthenticated: state.isAuthenticated, login, logout }}
-            {...props}
-        />
-    )
-}
+        <AuthContext.Provider
+            value={{
+                token,
+                loading,
+                isAuthenticated,
+                setAuthenticated,
+                logout,
+            }}
+        >
+            {children}
+        </AuthContext.Provider>
+    );
+};
 
 export { AuthContext, AuthProvider };
