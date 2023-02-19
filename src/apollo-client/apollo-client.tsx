@@ -1,13 +1,13 @@
 // @ts-nocheck
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import Cookies from 'universal-cookie';
 import { getCSRFToken } from '../csrf-token';
+import { Cookies } from 'react-cookie';
+import { setContext } from '@apollo/client/link/context';
 
 let csrfToken = await getCSRFToken();
 
 const cookies = new Cookies();
-const authToken = cookies.get('authToken');
+let authToken = cookies.get('authToken');
 const authLink = setContext((_, { headers }) => {
     return {
         headers: {
@@ -25,10 +25,20 @@ const httpLink = new HttpLink({
     credentials: 'include',
 });
 
+const cache = new InMemoryCache({});
+
 
 let client = new ApolloClient({
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
+    cache: cache,
 });
 
+client.onClearStore(
+    () =>
+        new Promise<any>((resolve) => {
+            cookies.remove('authToken');
+            authToken = null;
+            resolve(true);
+        })
+);
 export default client;
