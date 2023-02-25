@@ -33,12 +33,4 @@ let client = new ApolloClient({
     cache: cache,
 });
 
-client.onClearStore(
-    () =>
-        new Promise<any>((resolve) => {
-            cookies.remove('authToken');
-            authToken = null;
-            resolve(true);
-        })
-);
 export default client;
