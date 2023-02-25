@@ -18,7 +18,7 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = new HttpLink({
-    uri: 'http://localhost/graphql/',
+    uri: process.env.REACT_APP_GRAPHQL_URL,
     headers: {
         "X-XSRF-TOKEN": csrfToken,
     },
