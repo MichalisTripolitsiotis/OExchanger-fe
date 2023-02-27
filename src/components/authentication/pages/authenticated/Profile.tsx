@@ -2,7 +2,7 @@ import Layout from '../../../Layouts/Layout'
 import Loader from '../../../Layouts/Loader';
 import useMe from '../../../../hooks/useMe';
 
-const Me = () => {
+const Profile = () => {
     const { data, loading } = useMe();
 
     if (loading) {
@@ -24,15 +24,15 @@ const Me = () => {
                     <div className="grid grid-cols-1 md:grid-cols-1">
                         <div className="grid grid-cols-3 text-center order-last md:order-first mt-20 md:mt-0">
                             <div>
-                                <p className="font-bold text-gray-700 text-xl">22</p>
-                                <p className="text-gray-400">Joined Communities</p>
+                                <p className="font-bold text-gray-700 text-xl">{data.me.subscribedCommunitiesCount}</p>
+                                <p className="text-gray-400">Subscribed Communities</p>
                             </div>
                             <div>
-                                <p className="font-bold text-gray-700 text-xl">10</p>
+                                <p className="font-bold text-gray-700 text-xl">{data.me.moderatedCommunitiesCount}</p>
                                 <p className="text-gray-400">Moderated communities</p>
                             </div>
                             <div>
-                                <p className="font-bold text-gray-700 text-xl">89</p>
+                                <p className="font-bold text-gray-700 text-xl">{data.me.postsCount}</p>
                                 <p className="text-gray-400">Posts</p>
                             </div>
                         </div>
@@ -51,4 +51,4 @@ const Me = () => {
     )
 }
 
-export default Me
+export default Profile

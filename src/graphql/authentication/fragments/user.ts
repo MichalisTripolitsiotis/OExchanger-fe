@@ -5,6 +5,9 @@ export const userFragment = gql`
     id
     name
     email
-    created_at
+    created_at,
+    moderatedCommunitiesCount,
+    subscribedCommunitiesCount,
+    postsCount
   }
 `;

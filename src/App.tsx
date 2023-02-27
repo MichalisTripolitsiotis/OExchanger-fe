@@ -8,11 +8,11 @@ import Dashboard from './components/authentication/pages/authenticated/Dashboard
 import ProtectedRoute from './components/Layouts/ProtectedRoute';
 import { AuthContext } from './context/authContext';
 import { useContext } from 'react';
-import Me from './components/authentication/pages/authenticated/Me';
 import EmailVerification from './components/authentication/pages/auth/EmailVerification';
 import ForgotPassword from './components/authentication/pages/auth/ForgotPassword';
 import ResetPassword from './components/authentication/pages/auth/ResetPassword';
 import Loader from './components/Layouts/Loader';
+import Profile from './components/authentication/pages/authenticated/Profile';
 
 function App() {
   const { token, isAuthenticated, loading } = useContext(AuthContext);
@@ -34,7 +34,7 @@ function App() {
 
         <Route element={<ProtectedRoute token={token} authenticated={isAuthenticated} />}>
           <Route path="dashboard" element={<Dashboard />} />
-          <Route path="me" element={<Me />} />
+          <Route path="profile" element={<Profile />} />
         </Route>
         <Route path="*" element={
           <div>
