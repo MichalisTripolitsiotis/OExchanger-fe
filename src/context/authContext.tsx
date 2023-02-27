@@ -44,7 +44,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                     });
 
                     const me = data?.me;
-                    console.log(me);
                     if (me) {
                         setIsAuthenticated(true);
                         setToken(token);
@@ -66,7 +65,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }, [cookies, client]);
 
     const setAuthenticated = (authenticationToken: string) => {
-        console.log(authenticationToken);
         setCookie(TOKEN_NAME, authenticationToken, {
             path: "/",
             httpOnly: false, // set to true
