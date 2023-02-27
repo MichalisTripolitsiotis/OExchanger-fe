@@ -1,13 +1,13 @@
 // @ts-nocheck
 import { ApolloClient, InMemoryCache, HttpLink } from '@apollo/client';
-import { setContext } from '@apollo/client/link/context';
-import Cookies from 'universal-cookie';
 import { getCSRFToken } from '../csrf-token';
+import { Cookies } from 'react-cookie';
+import { setContext } from '@apollo/client/link/context';
 
 let csrfToken = await getCSRFToken();
 
 const cookies = new Cookies();
-const authToken = cookies.get('authToken');
+let authToken = cookies.get('authToken');
 const authLink = setContext((_, { headers }) => {
     return {
         headers: {
@@ -18,17 +18,19 @@ const authLink = setContext((_, { headers }) => {
 });
 
 const httpLink = new HttpLink({
-    uri: 'http://localhost/graphql/',
+    uri: process.env.REACT_APP_GRAPHQL_URL,
     headers: {
         "X-XSRF-TOKEN": csrfToken,
     },
     credentials: 'include',
 });
 
+const cache = new InMemoryCache({});
+
 
 let client = new ApolloClient({
     link: authLink.concat(httpLink),
-    cache: new InMemoryCache(),
+    cache: cache,
 });
 
 export default client;

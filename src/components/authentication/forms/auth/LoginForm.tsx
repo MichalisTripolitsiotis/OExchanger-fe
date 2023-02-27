@@ -17,7 +17,7 @@ const LoginForm = () => {
 
     const [login] = useMutation(LOGIN_MUTATION, {
         onCompleted: (data) => {
-            context.login(data);
+            context.setAuthenticated(data.login);
             navigate('/dashboard');
         },
         onError: ({ graphQLErrors }) => {
@@ -27,6 +27,7 @@ const LoginForm = () => {
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
+        setErrors([]);
         login({ variables: { email, password } });
     };
 

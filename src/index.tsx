@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
@@ -8,6 +7,7 @@ import { ApolloProvider } from '@apollo/client';
 import { BrowserRouter } from 'react-router-dom';
 import client from './apollo-client/apollo-client';
 import { AuthProvider } from './context/authContext';
+import { CookiesProvider } from 'react-cookie';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -15,13 +15,15 @@ const root = ReactDOM.createRoot(
 
 root.render(
   <ApolloProvider client={client}>
-    <AuthProvider>
+    <CookiesProvider>
       <BrowserRouter>
-        <React.StrictMode>
-          <App />
-        </React.StrictMode>
+        <AuthProvider>
+          <React.StrictMode>
+            <App />
+          </React.StrictMode>
+        </AuthProvider>
       </BrowserRouter>
-    </AuthProvider>
+    </CookiesProvider>
   </ApolloProvider>
 );
 

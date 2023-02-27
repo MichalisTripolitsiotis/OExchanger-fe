@@ -12,10 +12,15 @@ import Me from './components/authentication/pages/authenticated/Me';
 import EmailVerification from './components/authentication/pages/auth/EmailVerification';
 import ForgotPassword from './components/authentication/pages/auth/ForgotPassword';
 import ResetPassword from './components/authentication/pages/auth/ResetPassword';
+import Loader from './components/Layouts/Loader';
 
 function App() {
-  const { token, isAuthenticated } = useContext(AuthContext);
+  const { token, isAuthenticated, loading } = useContext(AuthContext);
 
+  if (loading) {
+    return <Loader loading={loading} />
+  }
+  
   return (
     <div>
       <Navbar />
@@ -24,7 +29,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
-        <Route path="/verifyemail/:token" element={<EmailVerification />} />
+        <Route path="/verify-email/:token" element={<EmailVerification />} />
         <Route path="/reset-password/:token/:user" element={<ResetPassword />} />
 
         <Route element={<ProtectedRoute token={token} authenticated={isAuthenticated} />}>

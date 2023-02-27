@@ -19,7 +19,7 @@ const Navbar = () => {
         logoutMutation();
 
     }
-    // console.log(user);
+
     return (
         <div className="content px-8 py-2">
             <nav className="flex items-center justify-between">
